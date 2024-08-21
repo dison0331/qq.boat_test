@@ -34,5 +34,5 @@ if __name__ == "__main__":
     # 设置事件通道的监听意图
     intents = botpy.Intents(public_guild_messages=True)
     client = MyClient(intents=intents)
-    # 运行机器人，传入appid和token
+    # 运行机器人，传入appid和token.
     client.run(appid=test_config["appid"], token=test_config["token"])
