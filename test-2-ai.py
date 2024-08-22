@@ -7,7 +7,7 @@ from botpy.message import Message
 # 这里我们直接跳过读取配置文件的步骤，直接定义它们
 test_config = {
     "appid": "102268340",
-    "token": "quy26AEINSXchmrw28EKQWcjqx4BIPXf"
+    "token": "rVfAQSNq5E8PWjyfhoZms2JkKrC85mRE"
 }
 
 

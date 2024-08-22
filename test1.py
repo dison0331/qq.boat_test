@@ -18,4 +18,4 @@ intents = botpy.Intents(public_guild_messages=True)
 # 创建并运行机器人客户端
 # 注意：你需要替换{appid}和{token}为你的实际App ID和Token
 client = SimpleBot(intents=intents)
-client.run(appid='{102268340}', token='{quy26AEINSXchmrw28EKQWcjqx4BIPXf}')
+client.run(appid='{102268340}', token='{rVfAQSNq5E8PWjyfhoZms2JkKrC85mRE}')
