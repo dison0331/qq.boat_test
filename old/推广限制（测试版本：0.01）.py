@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 # 这是一个简单的示例，不是开发程序主体！
 import os
+import time
+
 import botpy
 from botpy import logging
 from botpy.ext.command_util import Commands
 from botpy.message import Message
 from botpy.ext.cog_yaml import read
+from datetime import datetime
 
 test_config = read(os.path.join(os.path.dirname(__file__), "config.yaml"))
 _log = logging.get_logger()
@@ -41,11 +44,26 @@ async def help_list(message: Message, params=None):
     return True
 
 
+@Commands("/报时")
+async def now_time(message: Message, params=None):
+    a = time.strftime("%Y-%m-%d, %H:%M:%S")
+    await message.reply(
+        content=f'''  现在的时间是 “{a} ” 
+       注意：
+（attention）：
+             时间可能存有一定延迟，仅供参考！
+    （Time may have some delay error, for reference only.）
+'''
+    )
+    return True
+
+
 class MyClient(botpy.Client):
     async def on_at_message_create(self, message: Message):
         # 注册指令handler
         tasks = [
-            help_list
+            help_list,
+            now_time
         ]
         for handler in tasks:
             if await handler(api=self.api, message=message):
