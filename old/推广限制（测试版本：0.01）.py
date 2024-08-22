@@ -32,6 +32,8 @@ helplist = """使用说明
 
 帮助文档版本：0.01beta"""
 
+jubao = '''已收到举报信息，现已报告给管理员'''
+
 
 @Commands("/帮助")
 async def help_list(message: Message, params=None):
@@ -40,6 +42,12 @@ async def help_list(message: Message, params=None):
     )
     return True
 
+@Commands("/举报")
+async def help_list(message: Message, params=None):
+    await message.reply(
+        content=jubao
+    )
+    return True
 
 class MyClient(botpy.Client):
     async def on_at_message_create(self, message: Message):
