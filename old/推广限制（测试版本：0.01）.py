@@ -14,8 +14,15 @@ _log = logging.get_logger()
 
 helplist = """使用说明
 /报时
-    返回服务器时间，但会有一定小误差
+    返回服务器时间-24h
+    ！！会有一定小误差！！
     示例：/报时
+    （返回格式：
+                  年-月-日，时-分-秒
+  “YYYY-MM-DD,hour-minute-second”）
+/问好
+    返回一句简单的问好语句
+    示例：/问好 
 
 /举报 违规详情
     允许举报成员违规行为，需回复源消息（待开发）
@@ -35,11 +42,21 @@ helplist = """使用说明
     解除成员禁言状态（待开发）
     示例：/解封 @AFK
 
-帮助文档版本：0.01beta"""
+帮助文档版本：0.02beta"""
 
 
 @Commands("/帮助")
-async def help_list(message: Message, params=None):
+async def help_list(message: Message):
+    _log.info('执行了帮助命令')
+    await message.reply(
+        content=helplist
+    )
+    return True
+
+
+@Commands("如何使用")
+async def no_thing(message: Message):
+    _log.info('无修饰-使用说明')
     await message.reply(
         content=helplist
     )
@@ -47,17 +64,29 @@ async def help_list(message: Message, params=None):
 
 
 @Commands("/报时")
-async def now_time(message: Message, params=None):
-    a = time.strftime("%Y-%m-%d, %H:%M:%S")
+async def now_time(message: Message):
+    t = time.strftime("%Y-%m-%d, %H:%M:%S")
+    _log.info(f'执行了报时命令,返回的时间为“{t}”')
     await message.reply(
-        content=f'''  现在的时间是 “{a} ” 
-       注意：
+        content=f'''  现在的时间是 “{t} ” 
+     注意：
 （attention）：
-             时间可能存有一定延迟，仅供参考！
+                  时间可能存有一定延迟，仅供参考！
     （Time may have some delay error, for reference only.）
 '''
     )
     return True
+
+
+@Commands("/问好")
+async def say_hello(message: Message):
+    t = time.strftime("%Y-%m-%d, %H:%M:%S")
+    _log.info(f'执行了问好命令,返回了时间“{t}”和简单问好')
+
+    await message.reply(
+        content=f'''现在是“{t}”。你好，很高兴认识你!
+    It is '{t}'.Hi,nice to meet you!'''
+    )
 
 
 class MyClient(botpy.Client):
@@ -65,7 +94,9 @@ class MyClient(botpy.Client):
         # 注册指令handler
         tasks = [
             help_list,
-            now_time
+            no_thing,
+            now_time,
+            say_hello
         ]
         for handler in tasks:
             if await handler(api=self.api, message=message):
