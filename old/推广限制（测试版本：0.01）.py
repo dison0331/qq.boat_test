@@ -3,6 +3,7 @@
 import os
 import time
 
+
 import botpy
 from botpy import logging
 from botpy.ext.cog_yaml import read
@@ -23,9 +24,7 @@ helplist = """使用说明
 /问好
     返回一句简单的问好语句
     示例：/问好 
-————————————————————————————————————
-                                        下方的正在开发中 \('——')/
-————————————————————————————————————
+_________下方未开发_____________
 /举报 违规详情
     允许举报成员违规行为，需回复源消息（待开发）
     示例：/举报 宣传违规软件
@@ -48,7 +47,7 @@ helplist = """使用说明
 
 
 @Commands("/帮助")
-async def help_list(message: Message):
+async def help_list(message: Message,):
     _log.info('执行了帮助命令')
     await message.reply(
         content=helplist
