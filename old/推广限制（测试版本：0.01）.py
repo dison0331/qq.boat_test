@@ -1,19 +1,21 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 # 这是一个简单的示例，不是开发程序主体！
 import os
 import time
 
 import botpy
 from botpy import logging
+from botpy.ext.cog_yaml import read
 from botpy.ext.command_util import Commands
 from botpy.message import Message
-from botpy.ext.cog_yaml import read
-from datetime import datetime
 
 test_config = read(os.path.join(os.path.dirname(__file__), "config.yaml"))
 _log = logging.get_logger()
 
 helplist = """使用说明
+/报时
+    返回服务器时间，但会有一定小误差
+    示例：/报时
 
 /举报 违规详情
     允许举报成员违规行为，需回复源消息（待开发）
