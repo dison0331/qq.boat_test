@@ -1,0 +1,8 @@
+s4.serv00.com
+zhuhesunny-2
+UM3!lvYMkl9H33(4M2g4
+
+cd domains/zhuhesunny-2.serv00.net/zhuhebot
+python dison_bot.py
+
+先输ps找任务PID 再kill 对应PID

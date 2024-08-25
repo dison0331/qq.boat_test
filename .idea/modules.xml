@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://V:/GitHub/2024编程/.idea/2024编程.iml" filepath="V:/GitHub/2024编程/.idea/2024编程.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/boat_tast.iml" filepath="$PROJECT_DIR$/.idea/boat_tast.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../zhuhebot/.idea/zhuhebot.iml" filepath="$PROJECT_DIR$/../zhuhebot/.idea/zhuhebot.iml" />
-      <module fileurl="file://V:/Users/bjsde/Desktop/开始编程/.idea/开始编程.iml" filepath="V:/Users/bjsde/Desktop/开始编程/.idea/开始编程.iml" />
     </modules>
   </component>
 </project>
