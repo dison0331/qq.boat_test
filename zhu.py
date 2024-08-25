@@ -19,11 +19,12 @@ config = read(os.path.join(os.path.dirname(__file__), "config.yaml"))
 text = load_yaml('text.yaml')
 help_list = text["help_list"]
 child_stiitings_error = text["child_stiitings_error"]
+
 _log = logging.get_logger()
 
 
-@Commands("/帮助")
-async def help_list(api: BotAPI, message: Message, params=None):
+@Commands("帮助")
+async def help_h(api: BotAPI, message: Message, params=None):
     _log.info("发送帮助文档")
     message_reference = Reference(message_id=message.id)
     await api.post_message(
@@ -39,7 +40,7 @@ class MyClient(botpy.Client):
     async def on_at_message_create(self, message: Message):
         # 注册指令handler
         handlers = [
-            help_list
+            help_h
         ]
         for handler in handlers:
             if await handler(api=self.api, message=message):
@@ -47,6 +48,10 @@ class MyClient(botpy.Client):
 
 
 if __name__ == "__main__":
+    # 通过预设置的类型，设置需要监听的事件通道
+    # intents = botpy.Intents.none()
+    # intents.public_guild_messages=True
+
     # 通过kwargs，设置需要监听的事件通道
     intents = botpy.Intents(public_guild_messages=True)
     client = MyClient(intents=intents)
