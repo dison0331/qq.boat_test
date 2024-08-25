@@ -6,5 +6,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="开始编程" />
     <orderEntry type="module" module-name="2024编程" />
+    <orderEntry type="module" module-name="zhuhebot" />
   </component>
 </module>

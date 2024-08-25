@@ -3,7 +3,6 @@
 import os
 import time
 
-
 import botpy
 from botpy import logging
 from botpy.ext.cog_yaml import read
