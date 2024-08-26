@@ -86,6 +86,20 @@ async def jvbao(api: BotAPI, message: Message, params=None):
     return True
 
 
+@Commands("获取属于我的ID ")
+async def get_id(api: BotAPI, message: Message, params=None):
+    t = time.strftime("%Y-%m-%d, %H:%M:%S")
+    _log.info(f"{t}由用户获取ID")
+    message_reference = Reference(message_id=message.id)
+    await api.post_message(
+        channel_id=message.channel_id,
+        content='用户你好，你的id是 ' + message.author.id,
+        msg_id=message.id,
+        message_reference=message_reference,
+    )
+    return True
+
+
 class MyClient(botpy.Client):
     async def on_at_message_create(self, message: Message):
         # 注册指令handler
@@ -93,7 +107,8 @@ class MyClient(botpy.Client):
             help_h,
             baoshi,
             wenhao,
-            jvbao
+            jvbao,
+            get_id
         ]
         for handler in handlers:
             if await handler(api=self.api, message=message):
