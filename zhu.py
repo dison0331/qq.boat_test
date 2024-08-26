@@ -10,7 +10,6 @@ from botpy.ext.cog_yaml import read
 from botpy.types.message import Reference
 
 
-
 def load_yaml(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         data = yaml.safe_load(file)
@@ -22,7 +21,6 @@ text = load_yaml('text.yaml')
 help_list = text["help_list"]
 
 child_stiitings_error = text["child_stiitings_error"]
-
 _log = logging.get_logger()
 
 
@@ -46,7 +44,7 @@ async def baoshi(api: BotAPI, message: Message, params=None):
     message_reference = Reference(message_id=message.id)
     await api.post_message(
         channel_id=message.channel_id,
-        content=f'''  现在的时间是 “{t} ” 
+        content='编号为 ' + message.author.id + f''' 的用户你好现在的时间是 “{t} ” 
      注意：
 （attention）：
                   时间可能存有一定延迟，仅供参考！
@@ -75,13 +73,13 @@ async def wenhao(api: BotAPI, message: Message, params=None):
 
 
 @Commands("举报")
-async def jubao(api: BotAPI, message: Message, params=None):
+async def jvbao(api: BotAPI, message: Message, params=None):
     t = time.strftime("%Y-%m-%d, %H:%M:%S")
     _log.info(f"{t}收到举报！")
     message_reference = Reference(message_id=message.id)
     await api.post_message(
         channel_id=message.channel_id,
-        content='''用户你好，收到并记录你的举报了，管理员正在赶来''',
+        content=message.author.id + ''' 号用户你好，收到并记录你的举报了，管理员正在赶来''',
         msg_id=message.id,
         message_reference=message_reference,
     )
@@ -95,7 +93,7 @@ class MyClient(botpy.Client):
             help_h,
             baoshi,
             wenhao,
-            jubao
+            jvbao
         ]
         for handler in handlers:
             if await handler(api=self.api, message=message):
