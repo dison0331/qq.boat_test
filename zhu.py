@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import time
 import yaml
 import botpy
 from botpy import logging, BotAPI
@@ -7,6 +8,7 @@ from botpy.ext.command_util import Commands
 from botpy.message import Message
 from botpy.ext.cog_yaml import read
 from botpy.types.message import Reference
+
 
 
 def load_yaml(file_path):
@@ -18,6 +20,7 @@ def load_yaml(file_path):
 config = read(os.path.join(os.path.dirname(__file__), "config.yaml"))
 text = load_yaml('text.yaml')
 help_list = text["help_list"]
+
 child_stiitings_error = text["child_stiitings_error"]
 
 _log = logging.get_logger()
@@ -36,11 +39,63 @@ async def help_h(api: BotAPI, message: Message, params=None):
     return True
 
 
+@Commands("报时")
+async def baoshi(api: BotAPI, message: Message, params=None):
+    t = time.strftime("%Y-%m-%d, %H:%M:%S")
+    _log.info(f"报送现在的时间（服务器）'{t}'")
+    message_reference = Reference(message_id=message.id)
+    await api.post_message(
+        channel_id=message.channel_id,
+        content=f'''  现在的时间是 “{t} ” 
+     注意：
+（attention）：
+                  时间可能存有一定延迟，仅供参考！
+    （Time may have some delay error, for reference only.）''',
+
+        msg_id=message.id,
+        message_reference=message_reference,
+    )
+    return True
+
+
+@Commands("问好")
+async def wenhao(api: BotAPI, message: Message, params=None):
+    t = time.strftime("%Y-%m-%d, %H:%M:%S")
+    _log.info(f"发送问好语句（时间为{t}）")
+    message_reference = Reference(message_id=message.id)
+    await api.post_message(
+        channel_id=message.channel_id,
+        content=f'''现在是“{t}”。你好，很高兴认识你!
+    Now is '{t}'.Hi,nice to meet you!''',
+
+        msg_id=message.id,
+        message_reference=message_reference,
+    )
+    return True
+
+
+@Commands("举报")
+async def jubao(api: BotAPI, message: Message, params=None):
+    t = time.strftime("%Y-%m-%d, %H:%M:%S")
+    _log.info(f"{t}收到举报！")
+    message_reference = Reference(message_id=message.id)
+    await api.post_message(
+        channel_id=message.channel_id,
+        content='''用户你好，收到并记录你的举报了，管理员正在赶来''',
+        msg_id=message.id,
+        message_reference=message_reference,
+    )
+    return True
+
+
 class MyClient(botpy.Client):
     async def on_at_message_create(self, message: Message):
         # 注册指令handler
         handlers = [
-            help_h
+            help_h,
+            baoshi,
+            wenhao,
+            jubao
         ]
         for handler in handlers:
             if await handler(api=self.api, message=message):
