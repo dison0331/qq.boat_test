@@ -100,8 +100,8 @@ async def get_id(api: BotAPI, message: Message, params=None):
     return True
 
 
-@Commands("禁言")
-async def mute(api: BotAPI, message: Message, params=None):
+@Commands("解除禁言")
+async def un_mute(api: BotAPI, message: Message, params=None):
     _log.info("执行禁言操作")
 
     # 确保 message.mentions 至少有一个用户
@@ -121,7 +121,7 @@ async def mute(api: BotAPI, message: Message, params=None):
         if user.id == message.author.id:
             await api.post_message(
                 channel_id=message.channel_id,
-                content="你不能禁言自己！",
+                content="WRONG:你不能禁言自己！",
                 msg_id=message.id
             )
             _log.info("用户试图禁言自己，操作已阻止")
@@ -147,12 +147,56 @@ async def mute(api: BotAPI, message: Message, params=None):
         _log.warning("没有提到的用户，无法执行禁言操作")
         await api.post_message(
             channel_id=message.channel_id,
-            content="请提到要禁言的用户。",
+            content="WRONG:请提到要禁言的用户。",
             msg_id=message.id
         )
 
     return True
 
+
+@Commands("禁言")
+async def mute(api: BotAPI, message: Message, params=None):
+    _log.info("执行禁言操作")
+
+    # 确保 message.mentions 至少有一个用户
+    if message.mentions and len(message.mentions) > 1:
+        user = message.mentions[1]  # 获取第一个提到的用户
+
+        # 检查是否试图解除禁言自己
+        if user.id == message.author.id:
+            await api.post_message(
+                channel_id=message.channel_id,
+                content="WRONG:你不能自己解除自己禁言！请联系管理员",
+                msg_id=message.id
+            )
+            _log.info("用户试图解除禁言自己，操作已阻止！")
+            return False
+
+        message_reference = Reference(message_id=message.id)
+
+        # 正确获取用户的用户名，并显示解除禁言
+        await api.post_message(
+            channel_id=message.channel_id,
+            content=f"{user.username} 已解除禁言",
+            msg_id=message.id,
+            message_reference=message_reference,
+        )
+
+        # 解除禁言成员
+        await api.mute_member(
+            guild_id=message.guild_id,
+            user_id=user.id,
+            mute_seconds= 0
+        )
+    else:
+        _log.warning("没有提到的用户，无法执行禁言操作")
+        await api.post_message(
+            channel_id=message.channel_id,
+            content="请提到要禁言的用户。",
+            msg_id=message.id
+        )
+
+    return True
 
 class MyClient(botpy.Client):
     async def on_at_message_create(self, message: Message):
@@ -163,7 +207,8 @@ class MyClient(botpy.Client):
             wenhao,
             jvbao,
             get_id,
-            mute
+            mute,un_mute,
+
         ]
         for handler in handlers:
             if await handler(api=self.api, message=message):
@@ -171,11 +216,11 @@ class MyClient(botpy.Client):
 
 
 if __name__ == "__main__":
-    # 通过预设置的类型，设置需要监听的事件通道
+    # a通过预设置的类型，设置需要监听的事件通道
     # intents = botpy.Intents.none()
     # intents.public_guild_messages=True
 
-    # 通过kwargs，设置需要监听的事件通道
+    # b通过kwargs，设置需要监听的事件通道
     intents = botpy.Intents(public_guild_messages=True)
     client = MyClient(intents=intents)
     client.run(appid=config["appid"], secret=config["secret"])
