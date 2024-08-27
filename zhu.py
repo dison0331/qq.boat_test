@@ -100,8 +100,9 @@ async def get_id(api: BotAPI, message: Message, params=None):
     return True
 
 
-@Commands("解除禁言")
-async def un_mute(api: BotAPI, message: Message, params=None):
+@Commands("/禁言")
+async def mute(api: BotAPI, message: Message, params=None):
+
     _log.info("执行禁言操作")
 
     # 确保 message.mentions 至少有一个用户
@@ -154,13 +155,16 @@ async def un_mute(api: BotAPI, message: Message, params=None):
     return True
 
 
-@Commands("禁言")
-async def mute(api: BotAPI, message: Message, params=None):
-    _log.info("执行禁言操作")
+@Commands("解禁言")
+async def un_mute(api: BotAPI, message: Message, params=None):
+    _log.info("执行解除禁言操作")
 
     # 确保 message.mentions 至少有一个用户
     if message.mentions and len(message.mentions) > 1:
         user = message.mentions[1]  # 获取第一个提到的用户
+
+        ute_seconds = 0  # 设置默认禁言时间
+
 
         # 检查是否试图解除禁言自己
         if user.id == message.author.id:
@@ -186,13 +190,13 @@ async def mute(api: BotAPI, message: Message, params=None):
         await api.mute_member(
             guild_id=message.guild_id,
             user_id=user.id,
-            mute_seconds= 0
+            mute_seconds= ute_seconds
         )
     else:
-        _log.warning("没有提到的用户，无法执行禁言操作")
+        _log.warning("没有提到的用户，无法执行解除禁言操作")
         await api.post_message(
             channel_id=message.channel_id,
-            content="请提到要禁言的用户。",
+            content="请提到要解除禁言的用户。",
             msg_id=message.id
         )
 
@@ -207,7 +211,8 @@ class MyClient(botpy.Client):
             wenhao,
             jvbao,
             get_id,
-            mute,un_mute,
+            mute,
+            un_mute
 
         ]
         for handler in handlers:
