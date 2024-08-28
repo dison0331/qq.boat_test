@@ -76,15 +76,28 @@ async def wenhao(api: BotAPI, message: Message, params=None):
 async def jvbao(api: BotAPI, message: Message, params=None):
     t = time.strftime("%Y-%m-%d, %H:%M:%S")
     _log.info(f"{t}收到举报！")
-    message_reference = Reference(message_id=message.id)
-    await api.post_message(
-        channel_id=message.channel_id,
-        content=message.author.id + ''' 号用户你好，收到并记录你的举报了，管理员正在赶来''',
-        msg_id=message.id,
-        message_reference=message_reference,
-    )
-    return True
+    if message.mentions and len(message.mentions) > 1:
+        user1 = message.mentions[1]  # 获取提到的用户（设置成1是因为机器人吧自己也算在里面的）
+        message_reference = Reference(message_id=message.id)
 
+        await api.post_message(
+            channel_id=message.channel_id,
+            content=message.author.id + f''' 号用户你好，你举报了 {user1.username}({user1.id})，我们已收到并记录了，感谢您为频道做的贡献''',
+            msg_id=message.id,
+            message_reference=message_reference,
+        )
+        _log.info(message.author.id+f'号用户举报了{user1.username}({user1.id})')
+        return True
+
+    else:
+        message_reference = Reference(message_id=message.id)
+        _log.warning("没有提到用户，无法执行举报操作!")
+        await api.post_message(
+            channel_id=message.channel_id,
+            content="WRONG:请提到要举报的用户!",
+            msg_id=message.id,
+            message_reference=message_reference,
+        )
 
 @Commands("获取属于我的ID")
 async def get_id(api: BotAPI, message: Message, params=None):
