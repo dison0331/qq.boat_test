@@ -102,14 +102,14 @@ async def jvbao(api: BotAPI, message: Message, params=None):
 @Commands("获取属于我的ID")
 async def get_id(api: BotAPI, message: Message, params=None):
     t = time.strftime("%Y-%m-%d, %H:%M:%S")
-    _log.info(f"{t}有用户获取ID")
     message_reference = Reference(message_id=message.id)
     await api.post_message(
         channel_id=message.channel_id,
-        content='用户你好，你的id是 ' + message.author.id,
+        content='用户 '+message.author.username+' 您好，你的id是 ' + message.author.id,
         msg_id=message.id,
         message_reference=message_reference,
     )
+    _log.info(f"{t}有用户获取ID "+message.author.username+' （ '+message.author.id+' )')
     return True
 
 
