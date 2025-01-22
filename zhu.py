@@ -19,6 +19,7 @@ def load_yaml(file_path):
 config = read(os.path.join(os.path.dirname(__file__), "config.yaml"))
 text = load_yaml('text.yaml')
 help_list = text["help_list"]
+yh = text['yh']
 
 child_stiitings_error = text["child_stiitings_error"]
 _log = logging.get_logger()
@@ -239,6 +240,18 @@ async def unmute(api: BotAPI, message: Message, params=None):
         return False
     return True
 
+@Commands("用户协议")
+async def yhxy(api: BotAPI, message: Message, params=None):
+    _log.info("发送用户协议")
+    message_reference = Reference(message_id=message.id)
+    await api.post_message(
+        channel_id=message.channel_id,
+        content=yh,
+        msg_id=message.id,
+        message_reference=message_reference,
+    )
+    return True
+
 
 class MyClient(botpy.Client):
     async def on_at_message_create(self, message: Message):
@@ -250,7 +263,8 @@ class MyClient(botpy.Client):
             jvbao,
             get_id,
             mute,
-            unmute
+            unmute,
+            yhxy
 
         ]
         for handler in handlers:

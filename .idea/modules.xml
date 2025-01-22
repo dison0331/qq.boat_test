@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/boat_tast.iml" filepath="$PROJECT_DIR$/.idea/boat_tast.iml" />
+      <module fileurl="file://$USER_HOME$/Downloads/moss-tts-service-master/.idea/moss-tts-service-master.iml" filepath="$USER_HOME$/Downloads/moss-tts-service-master/.idea/moss-tts-service-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/../zhuhebot-main/.idea/zhuhebot.iml" filepath="$PROJECT_DIR$/../zhuhebot-main/.idea/zhuhebot.iml" />
     </modules>
   </component>
