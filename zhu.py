@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 import os
 import time
 import yaml
@@ -8,6 +9,32 @@ from botpy.ext.command_util import Commands
 from botpy.message import Message
 from botpy.ext.cog_yaml import read
 from botpy.types.message import Reference
+
+import requests
+import json
+
+
+def mai(query = Message.content):
+    url = "https://qianfan.baidubce.com/v2/app/conversation/runs"
+
+    payload = json.dumps({
+        "app_id": "6d86a6ee-4f1d-4b60-b96c-327ce22b4b7c",
+        "query": query,
+        "conversation_id": "2fed3374-a80d-4af5-beb4-484616c19bd8",
+        "stream": False
+    }, ensure_ascii=False)
+    headers = {
+        'Content-Type': 'application/json',
+        'X-Appbuilder-Authorization': 'Bearer bce-v3/ALTAK-ozMSELKF93HkpPMRGxG2t/f66d2d77f4f669ea57377e016b136fe1fdd03c8c'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload.encode("utf-8"))
+    answers = (response.text)
+    answer = 'answer'
+    print(answers)
+    answers = answers[answer]
+    print(answers)
+
 
 
 def load_yaml(file_path):
@@ -252,6 +279,21 @@ async def yhxy(api: BotAPI, message: Message, params=None):
     )
     return True
 
+@Commands("f")
+async def fuck(api: BotAPI, message: Message, params=None):
+    _log.info("发送")
+    query = message.content
+    answer = mai(query)
+    answer = answer['answer']
+    print(answer)
+    message_reference = Reference(message_id=message.id)
+    await api.post_message(
+        channel_id=message.channel_id,
+        content=answer,
+        msg_id=message.id,
+        message_reference=message_reference,
+    )
+    return True
 
 class MyClient(botpy.Client):
     async def on_at_message_create(self, message: Message):
@@ -264,7 +306,8 @@ class MyClient(botpy.Client):
             get_id,
             mute,
             unmute,
-            yhxy
+            yhxy,
+            fuck
 
         ]
         for handler in handlers:
